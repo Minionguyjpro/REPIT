@@ -75,17 +75,22 @@ device_init() {
 device_initPartitions() {
 
     # the crypto footer size:
-    local footerSize=$(( 16384 / sectorSize ))
+    local footerSize=$(( 20480 / sectorSize ))
 
     # the set of partitions that can be modified by REPIT:
     #     <gpt-number>  <gpt-name>  <friendly-name> <conf-defaults>     <crypto-footer>
     initPartition   18  SYSTEM      system          "same keep ext4"    0
+    initPartition   19  VENDOR      vendor          "same keep ext4"    0
+    initPartition   20  ODM         odm             "same keep ext4"    0
     initPartition   21  CACHE       cache           "same keep ext4"    0
     initPartition   22  HIDDEN      preload         "same keep ext4"    0
-    initPartition   26  USERDATA    data            "same keep ext4"    $footerSize
+    initpartition   23  OMR         omr             "same keep ext4"    0
+    initpartition   24  CP_DEBUG    cp_debug        "same keep raw"     0
+    initpartition   25  NAD_FW      nad_fw          "same keep raw"     0
+    initPartition   26  USERDATA    data            "same keep f2fs"    $footerSize
 
     # the set of modifiable partitions that can be configured by the user (overriding <conf-defaults>):
-    configurablePartitions="$(seq 25 28)"
+    configurablePartitions="$(seq 18 26)"
 
 }
 
@@ -107,7 +112,7 @@ device_setup() {
     #heapMinSize=$(( 8 * MiB ))
     
     # the partition alignment:
-    heapAlignment=$(( 1 * MiB ))
+    heapAlignment=$(( 4 * MiB ))
 
 }
 
@@ -117,7 +122,7 @@ device_setupHeap_main() {
     heapPartitions="$(seq 25 28)"
 
     # the disk area (as a sector range) to use for the heap partitions:
-    heapStart=$(parOldEnd 24)       # one past the end of a specific partition
+    heapStart=$(parOldEnd 17)       # one past the end of a specific partition
     heapEnd=$deviceHeapEnd          # one past the last usable sector of the device
 
 }
