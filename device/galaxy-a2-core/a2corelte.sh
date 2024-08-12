@@ -11,8 +11,6 @@
 
 ### a2corelte
 
-# This port was possible thanks to the invaluable help of ajislav.
-
 device_checkDevice() {
 
     checkTool getprop
