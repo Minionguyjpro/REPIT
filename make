@@ -26,8 +26,8 @@ makeZip() {
     unsignedZip="build/lanchon-repit-unsigned-$device.zip"
     signedZip="build/lanchon-repit-$versionShort-$makeFilenameConfig-$device.zip"
 
-    flashize-env "$script" "$makeFlashizeEnv" "$unsignedZip" /tmp/lanchon-repit.log
-    signapk -w key/testkey.x509.pem key/testkey.pk8 "$unsignedZip" "$signedZip"
+    ./flashize-env "$script" "$makeFlashizeEnv" "$unsignedZip" /tmp/lanchon-repit.log
+    #java -jar signapk.jar -w key/testkey.x509.pem key/testkey.pk8 "$unsignedZip" "$signedZip"
 
     #rm "$script"
     rm "$unsignedZip"
